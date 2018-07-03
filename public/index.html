@@ -30,8 +30,17 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
         <button class="btn btn-default" id="get-playlists">Get Playlists</button>
       </div>
-      <div id="playlists"></div>
-
+      <div id="playlists">
+        <table id='playlist-list' class="table">
+          <thead>
+              <tr>
+              <th>Name</th>
+              <th>Track Count</th>
+              <th>Owner</th>
+              </tr>
+          </thead>
+          <tbody> </tbody>
+        </table>
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
@@ -148,13 +157,42 @@
                 'Authorization': 'Bearer ' + access_token
               },
               success: (function(data) {
-                playlists.innerHTML = data.items[0].name;
+                loadPlaylists(data);
+//                playlists.innerHTML = data.items[0].name;
               }
             )});
           }, false);
         }
+        
+        function loadPlaylists(playlists) {
+          var i;
+          var playlistList = $("#playlist-list tbody");
 
-      
+          for (i = 0; i < playlists.items.length; i++) {
+            var tr = $("<tr>");
+            var tdName = $("<td>")
+            var aName = $("<a>")
+                    .text(playlists.items[i].name)
+                    .addClass('hoverable')
+//                    .on('click', function() {
+//                        fetchSinglePlaylist(playlist);
+//                    });
+            tdName.append(aName);
+            var tdTrackCount = $("<td>").text(playlists.items[i].tracks.total);
+            var tdOwner = $("<td>").text(playlists.items[i].owner.id);
+            
+            tr.append(tdName);
+            tr.append(tdTrackCount);
+            tr.append(tdOwner);
+
+            playlistList.append(tr);
+            
+            
+          }
+//          document.getElementById("playlists").innerHTML = playlists.items[0].name;
+//          document.getElementById("playlists").innerHTML = playlistList;
+        }
+
       if ('error' in args) {
         error("Sorry, I can't read your playlists from Spotify without authorization");
         $("#go").show();
@@ -179,7 +217,8 @@
             authorizeUser();
         });
     }
-//    function loadPlaylists(uid) {
+        
+        //    function loadPlaylists(uid) {
 //    fetchPlaylists(uid, playlistLoaded);
 //    }
 //       function fetchPlaylists(uid, callback) {
@@ -195,22 +234,6 @@
 //            }
 //            getSpotify(url, data, callback);
 //        }
-       
-//      function getSpotify(url, data, callback) {
-//        $.ajax(url, {
-//            dataType: 'json',
-//            data: data,
-//            headers: {
-//                'Authorization': 'Bearer ' + accessToken
-//            },
-//            success: function(r) {
-//                callback(r);
-//            },
-//            error: function(r) {
-//                callback(null);
-//            }
-//        });
-//    } 
 })();
     </script>
   </body>
