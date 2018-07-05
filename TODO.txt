@@ -30,3 +30,8 @@ Tasks:
 --Save an empty playlist to user's profile
 --Pull songs from a user's playlist into a new playlist
 
+Manage:
+--Make JavaScript and jQuery consistent
+
+Later:
+--Manage show/hide behavior

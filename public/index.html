@@ -30,6 +30,7 @@
       </div>
       <div id="playlists">
         <button class="btn btn-default" id="get-playlists">Get Playlists</button>
+        <button class="btn btn-default" id="save-playlist">Save Empty Playlist</button>
         <table id='playlist-list' class="table">
           <thead>
               <tr>
@@ -115,7 +116,6 @@
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-//                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
                   userId = response.id;
 
                   $('#login').hide();
@@ -127,8 +127,8 @@
               $('#login').show();
               $('#loggedin').hide();
           }
-
-          document.getElementById('get-playlists').addEventListener('click', function() {
+          
+          $('#get-playlists').on('click', function() {
             $.ajax({
               url: 'https://api.spotify.com/v1/users/' + userId + '/playlists',
               headers: {
@@ -136,10 +136,8 @@
               },
               success: (function(data) {
                 loadPlaylists(data);
-//                playlists.innerHTML = data.items[0].name;
               }
-            )});
-          }, false);
+            )})});
         }
         
         function loadPlaylists(playlists) {
@@ -164,11 +162,7 @@
             tr.append(tdOwner);
 
             playlistList.append(tr);
-            
-            
           }
-//          document.getElementById("playlists").innerHTML = playlists.items[0].name;
-//          document.getElementById("playlists").innerHTML = playlistList;
         }
 
       if ('error' in args) {
@@ -195,23 +189,6 @@
             authorizeUser();
         });
     }
-        
-        //    function loadPlaylists(uid) {
-//    fetchPlaylists(uid, playlistLoaded);
-//    }
-//       function fetchPlaylists(uid, callback) {
-//            $("#playlist-list tbody").empty();
-//            $(".prompt").hide();
-//            $(".spinner").show();
-//
-//            info("Getting your playlists");
-//            var url = 'https://api.spotify.com/v1/users/' + uid + '/playlists';
-//            var data = {
-//                limit:50,
-//                offset:0
-//            }
-//            getSpotify(url, data, callback);
-//        }
 })();
     </script>
   </body>
