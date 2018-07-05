@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Playlist Generator</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -19,7 +19,7 @@
   <body>
     <div class="container">
       <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
+        <h1>Welcome to Playlist Generator.</h1>
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
       <div id="loggedin">
@@ -27,10 +27,9 @@
         </div>
         <div id="oauth">
         </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-        <button class="btn btn-default" id="get-playlists">Get Playlists</button>
       </div>
       <div id="playlists">
+        <button class="btn btn-default" id="get-playlists">Get Playlists</button>
         <table id='playlist-list' class="table">
           <thead>
               <tr>
@@ -44,7 +43,7 @@
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
+      <p>Logged in as {{display_name}}</p>
       <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
@@ -63,12 +62,9 @@
       </div>
     </script>
 
+<!--Error if I comment this section out because of var oauthSource code below-->
     <script id="oauth-template" type="text/x-handlebars-template">
-      <h2>oAuth info</h2>
-      <dl class="dl-horizontal">
-        <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
-      </dl>
+      <h2>Playlists</h2>
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
@@ -90,10 +86,7 @@
           return hashParams;
         }
 
-        var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-            userProfileTemplate = Handlebars.compile(userProfileSource),
-            userProfilePlaceholder = document.getElementById('user-profile');
-
+//        Playlist button doesn't work if this code is commented out
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
@@ -122,7 +115,7 @@
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+//                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
                   userId = response.id;
 
                   $('#login').hide();
@@ -135,21 +128,6 @@
               $('#loggedin').hide();
           }
 
-          document.getElementById('obtain-new-token').addEventListener('click', function() {
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
-            });
-          }, false);
-            
           document.getElementById('get-playlists').addEventListener('click', function() {
             $.ajax({
               url: 'https://api.spotify.com/v1/users/' + userId + '/playlists',
