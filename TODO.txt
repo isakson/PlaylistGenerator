@@ -1,0 +1,32 @@
+TODO
+
+Design:
+Instructions
+A form with various optional parameters that allow a user to designate the kind of playlist they would like
+
+Form:
+
+--Playlist name (if none specified, default name of Playlist Generator Playlist)
+
+Seed options:
+  --Pull from user's specified playlist (dropdown menu of playlists)
+  --Pull from any playlist with specified keyword? (keyword)
+  --Pull from multiple of a user's specified playlists? (dropdown menu with multiple selections??)
+
+--Number of songs (if none specified, default playlist of 15 songs)
+OR
+--Min playlist length
+--Max playlist length
+
+--Min BPM (optional)
+--Max BPM (optional)
+
+--Alternate/vary BPM between songs (yes/no; default no)
+
+[Consider allowing for other specifications]
+
+
+Tasks:
+--Save an empty playlist to user's profile
+--Pull songs from a user's playlist into a new playlist
+
