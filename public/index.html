@@ -88,6 +88,7 @@
         }
 
 //        Playlist button doesn't work if this code is commented out
+//        How to change to jQuery?
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
@@ -136,8 +137,20 @@
               },
               success: (function(data) {
                 loadPlaylists(data);
+              })
+            })});
+          
+          $('#save-playlist').on('click', function() {
+            $.ajax({
+              url: 'https://api.spotify.com/v1/users/' + userId + '/playlists',
+              type: 'POST',
+              dataType: 'json',
+              data: JSON.stringify({name: 'New Playlist'}),
+              headers: {
+                'Authorization': 'Bearer ' + access_token,
+                'Content-Type': 'application/json'
               }
-            )})});
+            })});
         }
         
         function loadPlaylists(playlists) {
